@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    volumes:
+      - servervol:/serverdata
+    networks:
+      - app-network
+    ports:
+      - "5000:5000"
+    command: ["python", "server.py"]
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    volumes:
+      - clientvol:/clientdata
+    networks:
+      - app-network
+    depends_on:
+      - server
+    command: ["python", "client.py", "--server-url", "http://server:5000"]
+
+volumes:
+  servervol:
+  clientvol:
+
+networks:
+  app-network:
