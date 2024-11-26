@@ -1,8 +1,12 @@
 #!/bin/bash
 # Client setup script
 
-# Create Docker volume
+# URL and Port variables
+SERVER_URL=$1
+SERVER_PORT=$2
+
+# Create Docker volume for client container
 docker volume create clientvol
 
-# Start container with server's address and port
-docker-compose run -d client python client.py --server-url http://server:5000
+# Start the client container with the specified server URL and port
+docker-compose run -d client python client.py --server-url "http://$SERVER_URL:$SERVER_PORT"
