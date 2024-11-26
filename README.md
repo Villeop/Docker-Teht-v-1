@@ -7,7 +7,7 @@ Tehtävän ideana on demonstroida Dockerin käyttöä yksinkertaisessa ympärist
 ### Docker Container
 
 Docker Containerit eli kontit ovat tehtävässä **server** ja **client**.
-Niiden toiminnot ja asetukset määritellään Dockerfile-tiedostoissa. Server-kontti toimii yksinkertaisena HTTP-palvelimena, kun taas client-kontti lähettää pyyntöjä serverille ja vastaanottaa vastauksia. Molemmat kontit liitetään samaan Docker-verkkoon, jotta ne voivat kommunikoida keskenään.
+Niiden toiminnot ja asetukset määritellään Dockerfile-tiedostoissa. Server-kontti toimii yksinkertaisena HTTP-palvelimena, kun taas client-kontti lähettää pyynnön serverille ja vastaanottaa vastauksen. Molemmat kontit liitetään samaan Docker-verkkoon, jotta ne voivat kommunikoida keskenään.
 
 ### Docker Volumes
 
@@ -33,13 +33,15 @@ Tässä tehtävässä compose -tiedostoon on määritelty seuraavaa:
 Kontit voidaan rakentaa ajamalla luonti scriptit :
 ```bash
 ./server/serversetup.sh
-./client/clientsetup.sh
+./client/clientsetup.sh server 5000
 ```
-Kontit voidaan myös rakentaa komennolla:
+Client -scriptin kohdalla komennon tulee pitää sisällään palvelimen nimi ja portti, kuten tehtävänannossa pyydettiin.
+
+Kontit voidaan myös rakentaa suoraan komennolla:
 ```bash
-docker-compose up --build
+docker-compose up -d --build
 ```
-Konttien pitäisi ajaa tarvittavat sovellukset käynnistyessään automaattisesti, mutta tässä nyt vielä prosessi manuaalisesti toteutettuna:
+Konttien pitäisi ajaa kaikki tarvittava automaattisesti, mutta tässä nyt vielä koko prosessi manuaalisesti toteutettuna:
  1. Luodaan volyymit:
 ```bash
 docker volume create servervol
@@ -62,9 +64,9 @@ docker run -d --name client --network app-network -v clientvol:/clientdata clien
 
 ## Tiedoston siirron todentaminen
 
-1. Aloitetaan tarkistamalla kaikki kontit:
+1. Aloitetaan tarkistamalla luodut kontit:
 ```bash
-docker ps -a
+docker ps
 ```
 
 2. Tarkistetaan client-kontin lokit:
